@@ -50,6 +50,7 @@ graph TD
    ```bash
    export QWEN_API_KEY="your-qwen-key"
    export GITHUB_TOKEN="your-github-token"
+   export SNYK_TOKEN="your-snyk-token"
    ```
 
 4. Run the application:
