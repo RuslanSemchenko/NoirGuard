@@ -1,0 +1,14 @@
+[MASTER]
+ignore=CVS
+
+[MESSAGES CONTROL]
+# Enable strict checks
+enable=all
+disable=missing-docstring,too-few-public-methods
+
+[FORMAT]
+max-line-length=100
+
+[TYPECHECK]
+# Ensure type checking is enforced
+generated-members=pydantic.*

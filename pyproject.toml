@@ -1,0 +1,33 @@
+[project]
+name = "noirguard"
+version = "0.1.0"
+description = "Autonomous DevSecOps Auditor & Remediation Agent"
+authors = [{name = "Ruslan"}]
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "httpx",
+    "docker",
+    "PyGitHub"
+]
+requires-python = ">=3.14"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.mypy]
+python_version = "3.14"
+strict = true
+show_error_codes = true
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_reexport = true
+warn_return_any = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
