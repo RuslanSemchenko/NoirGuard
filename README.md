@@ -9,8 +9,6 @@ NoirGuard is an autonomous agent designed to detect, verify, and remediate secur
 - **Self-Correction Loop:** Employs a hardened AppSec persona to generate and iteratively refine remediation patches until they pass all security and functional tests.
 - **GitHub Integration:** Automatically reports findings and proposes secure pull requests for verified patches.
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=RuslanSemchenko_NoirGuard&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=RuslanSemchenko_NoirGuard) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=RuslanSemchenko_NoirGuard&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=RuslanSemchenko_NoirGuard) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=RuslanSemchenko_NoirGuard&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=RuslanSemchenko_NoirGuard)[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=RuslanSemchenko_NoirGuard&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=RuslanSemchenko_NoirGuard)
-
 
 ## Architecture
 
