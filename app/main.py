@@ -15,6 +15,7 @@ agent = QwenClient()
 validator = Validator()
 github = GitHubClient()
 orchestrator = RemediationOrchestrator(agent, validator)
+
 WEBHOOK_SECRET = os.environ.get("GITHUB_WEBHOOK_SECRET", "super-secret").encode()
 
 @app.get("/")

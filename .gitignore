@@ -18,3 +18,6 @@ Thumbs.db
 # NoirGuard/DevSecOps
 logs/
 .snyk
+setup_private.bat
+setup_private.sh
+.env

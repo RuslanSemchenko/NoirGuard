@@ -1,4 +1,7 @@
+import re
 import time
+import tempfile
+from pathlib import Path
 from app.agent import QwenClient
 from app.validator import Validator
 
@@ -9,13 +12,20 @@ When an anomaly is detected, provide a secure Python patch. If validation fails,
 you will receive the Pylint and Snyk logs. Analyze the errors and generate a corrected patch.
 """
 
+
+def extract_code(text: str) -> str:
+    code_blocks = re.findall(r"```(?:python)?\n(.*?)```", text, re.DOTALL)
+    if code_blocks:
+        return max(code_blocks, key=len).strip()
+    return text.strip()
+
+
 class RemediationOrchestrator:
     def __init__(self, agent: QwenClient, validator: Validator):
         self.agent = agent
         self.validator = validator
 
     async def remediate(self, code_base: str, vulnerability_report: str) -> str:
-        # Metrics initialization
         start_time = time.time()
         total_tokens = 0
         max_retries = 3
@@ -27,18 +37,23 @@ class RemediationOrchestrator:
         current_prompt = prompt
 
         for attempt in range(max_retries):
-            # Generate patch/fix
             response = await self.agent.generate_response(current_prompt,
                                                           system_prompt=APPSEC_SYSTEM_PROMPT)
 
-            # Metrics update (mocked)
             total_tokens += response.get("usage", {}).get("total_tokens", 0)
             patch = response["choices"][0]["message"]["content"]
+            clean_code = extract_code(patch)
 
-            # Run validation
-            validation_result = self.validator.run_validation("/target")
+            with tempfile.NamedTemporaryFile(mode="w", suffix=".py",
+                                             delete=False) as f:
+                f.write(clean_code)
+                tmp_path = f.name
 
-            # Check if successful
+            try:
+                validation_result = self.validator.run_validation(tmp_path)
+            finally:
+                Path(tmp_path).unlink(missing_ok=True)
+
             if not validation_result["status"]:
                 duration = time.time() - start_time
                 metrics = (f"\n\n--- NoirGuard Remediation Metrics ---\n"
@@ -47,7 +62,6 @@ class RemediationOrchestrator:
                            f"Total Tokens Used: {total_tokens}")
                 return patch + metrics
 
-            # Feedback
             feedback = (f"\n\nValidation failed (Attempt {attempt+1}). "
                         f"Pylint: {validation_result.get('pylint_log')}\n"
                         f"Snyk: {validation_result.get('snyk_log')}")
