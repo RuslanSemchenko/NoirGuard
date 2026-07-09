@@ -1,0 +1,1 @@
+"""NoirGuard test suite."""
