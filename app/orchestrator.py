@@ -54,17 +54,8 @@ class RemediationOrchestrator:
         self.max_retries = max_retries
 
     def _validate_patch(self, clean_code: str) -> dict[str, object]:
-        """Write the patch to a temp file and run all validators on it."""
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".py", delete=False
-        ) as tmp_file:
-            tmp_file.write(clean_code)
-            tmp_path = tmp_file.name
-        try:
-            result = self.validator.run_validation(tmp_path)
-        finally:
-            Path(tmp_path).unlink(missing_ok=True)
-
+        """Run all validators and the static scanner against the patch."""
+        result = self.validator.validate_code(clean_code)
         scan_report = self.scanner.scan(clean_code)
         result["scan_passed"] = scan_report.passed
         result["scan_summary"] = scan_report.summary()
